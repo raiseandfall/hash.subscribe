@@ -1,0 +1,27 @@
+{
+  "name": "hash.subscribe",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raiseandfall/Hash.subscribe.git"
+  },
+  "keywords": [
+    "hash",
+    "browser",
+    "location"
+  ],
+  "author": {
+    "name": "raiseandfall",
+    "url": "https://github.com/raiseandfall"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raiseandfall/Hash.subscribe/issues"
+  },
+  "homepage": "https://github.com/raiseandfall/Hash.subscribe#readme"
+}
