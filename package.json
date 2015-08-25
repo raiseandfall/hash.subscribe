@@ -1,10 +1,12 @@
 {
   "name": "hash.subscribe",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Subscribe your components to the browser Hash, and get change notifications",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "hint": "jshint --reporter node_modules/jshint-reporter-jscs **/*.js",
+    "dev": "watch 'npm run hint && npm run test' src -d",
+    "test": "mocha test/tests.js"
   },
   "repository": {
     "type": "git",
@@ -23,5 +25,12 @@
   "bugs": {
     "url": "https://github.com/raiseandfall/Hash.subscribe/issues"
   },
-  "homepage": "https://github.com/raiseandfall/Hash.subscribe#readme"
+  "homepage": "https://github.com/raiseandfall/Hash.subscribe#readme",
+  "devDependencies": {
+    "jshint": "^2.8.0",
+    "jshint-reporter-jscs": "^0.1.0",
+    "jshint-stylish": "^2.0.1",
+    "mocha": "^2.2.5",
+    "watch": "^0.16.0"
+  }
 }

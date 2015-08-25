@@ -1,6 +1,8 @@
 /* global window,document */
 
 var Subscriber = function(hashParams, cb) {
+  'use strict';
+  
   var _subscriptions = hashParams,
     _cb = cb;
 
@@ -14,7 +16,7 @@ var Subscriber = function(hashParams, cb) {
   }
 };
 
-var Hash = (function(window, document)) {
+var Hash = (function(window, document) {
   'use strict';
 
   // Init
@@ -317,6 +319,6 @@ var Hash = (function(window, document)) {
     mute: mute,
     unmute: unmute
   }
-}(window, document);
+})(window, document);
 
 module.exports = Hash.getInstance();
