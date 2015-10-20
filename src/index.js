@@ -1,5 +1,3 @@
-/* global window,document */
-
 var Subscriber = function(hashParams, cb) {
   'use strict';
   
@@ -8,15 +6,15 @@ var Subscriber = function(hashParams, cb) {
 
   var notify = function(params) {
     _cb.call(this.params);
-  }
+  };
 
   return {
     subscriptions: _subscriptions,
     notify: notify
-  }
+  };
 };
 
-var Hash = (function(window, document) {
+var Hash = (function() {
   'use strict';
 
   // Init
@@ -201,16 +199,16 @@ var Hash = (function(window, document) {
     setHash(hashStr);
   };
 
-  // @function      updateHashParam
-  // @role          update on hash param in the hash
+  // @function      updateHashKeyValue
+  // @role          update hash key value
+  // @params        key - hash param
   //
-  var updateHashParam = function(name, value) {
-    var curParams = $.extend([], _fn.hashParams);
-    curParams[name] = value;
+  var updateHashKeyValue = function(key, value) {
+    var curParams = clone(_fn.hashParams);
+    curParams[key] = value;
     // Set hash params
     setHashParams(curParams);
   };
-
 
   // @function      buildHashFromParams
   // @role          build hash from params
@@ -314,11 +312,11 @@ var Hash = (function(window, document) {
     setHash: setHash,
     getHashParams: getHashParams,
     setHashParams: setHashParams,
-    updateHashParams: updateHashParams,
+    updateHashKeyValue: updateHashKeyValue,
     init: init,
     mute: mute,
     unmute: unmute
-  }
-})(window, document);
+  };
+})();
 
 module.exports = Hash.getInstance();
