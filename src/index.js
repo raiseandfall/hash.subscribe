@@ -1,4 +1,4 @@
-/* global window,document */
+var clone = require('clone');
 
 var Subscriber = function(hashParams, cb) {
   'use strict';
@@ -8,12 +8,12 @@ var Subscriber = function(hashParams, cb) {
 
   var notify = function(params) {
     _cb.call(this.params);
-  }
+  };
 
   return {
     subscriptions: _subscriptions,
     notify: notify
-  }
+  };
 };
 
 var Hash = (function(window, document) {
@@ -55,29 +55,6 @@ var Hash = (function(window, document) {
     } else if (defaultHash !== '') {
       setHash(defaultHash);
     }
-  };
-
-  // @function      clone
-  // @role          clone element
-  // @returns       element cloned
-  //
-  var clone = function (obj) {
-    var out = [],
-      i = 0;
-    if (isArr(obj)) {
-      var len = obj.length;
-      for ( ; i < len; i++ ) {
-        out[i] = clone(obj[i]);
-      }
-      return out;
-    }
-    if (typeof obj === 'object') {
-      for ( i in obj ) {
-        out[i] = clone(obj[i]);
-      }
-      return out;
-    }
-    return obj;
   };
 
   // @function      isArr
@@ -205,7 +182,7 @@ var Hash = (function(window, document) {
   // @role          update on hash param in the hash
   //
   var updateHashParam = function(name, value) {
-    var curParams = $.extend([], _fn.hashParams);
+    var curParams = clone(_fn.hashParams);
     curParams[name] = value;
     // Set hash params
     setHashParams(curParams);
@@ -314,11 +291,11 @@ var Hash = (function(window, document) {
     setHash: setHash,
     getHashParams: getHashParams,
     setHashParams: setHashParams,
-    updateHashParams: updateHashParams,
+    updateHashParam: updateHashParam,
     init: init,
     mute: mute,
     unmute: unmute
-  }
+  };
 })(window, document);
 
 module.exports = Hash.getInstance();
