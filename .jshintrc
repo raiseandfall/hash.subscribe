@@ -7,6 +7,7 @@
   "immed": true,
   "newcap": true,
   "noarg": true,
+  "predef": ["window", "document"],
   "undef": true,
   "unused": "vars",
   "strict": true
