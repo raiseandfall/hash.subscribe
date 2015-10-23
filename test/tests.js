@@ -1,10 +1,11 @@
-// jshint strict:false,undef:false
+'use strict';
 
 var assert = require('assert'),
   Hash = require('../');
 
 describe('Hash.subscribe is defined', function() {
-  var hashInstance;
+  var hashInstance,
+    hashInstance2;
   before(function() {
     hashInstance = Hash;
     hashInstance2 = Hash;
@@ -16,6 +17,6 @@ describe('Hash.subscribe is defined', function() {
   });
 
   it('should be a singleton', function() {
-    assert.equal(hashInstance, hashInstance2);
+    assert.deepEqual(hashInstance, hashInstance2);
   });
 });

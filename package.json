@@ -4,7 +4,7 @@
   "description": "Subscribe your components to the browser Hash, and get change notifications",
   "main": "src/index.js",
   "scripts": {
-    "hint": "jshint --reporter node_modules/jshint-reporter-jscs **/*.js",
+    "hint": "jshint --reporter node_modules/jshint-reporter-jscs src/*.js",
     "dev": "watch 'npm run hint && npm run test' src -d",
     "test": "mocha test/tests.js"
   },
