@@ -1,4 +1,4 @@
-# Hash.subscribe  [![Build Status](https://travis-ci.org/raiseandfall/Hash.subscribe.svg)](https://travis-ci.org/raiseandfall/Hash.subscribe)
+# Hash.subscribe [![Build Status](https://travis-ci.org/raiseandfall/Hash.subscribe.svg)](https://travis-ci.org/raiseandfall/Hash.subscribe)
 
 A browser hash listener system using query string style parameters ( `#foo=bar&baz=qux` ), based on the subscribe design pattern.  
 
@@ -51,6 +51,16 @@ Parameters:
 
 ## CONTRIBUTE
 
+### Development task
+```shell
+$ git clone git@github.com:raiseandfall/Hash.subscribe.git && cd Hash.subscribe
+$ npm run dev
+```
+
+### Run tests independently
+```shell
+$ npm run test
+```
 
 ## LICENSE
 MIT
