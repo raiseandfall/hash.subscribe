@@ -1,22 +1,16 @@
-'use strict';
+'use strict'
 
-var assert = require('assert'),
-  Hash = require('../');
+var tape = require('tape');
+var Hash = require('../');
 
-describe('Hash.subscribe is defined', function() {
-  var hashInstance,
-    hashInstance2;
-  before(function() {
-    hashInstance = Hash;
-    hashInstance2 = Hash;
-  });
-
-  console.log(hashInstance);
-  it('should be defined', function() {
-    assert.notEqual(hashInstance, null);
-  });
-
-  it('should be a singleton', function() {
-    assert.deepEqual(hashInstance, hashInstance2);
-  });
+tape('Hash.subscribe is defined', function(t) {
+  t.plan(1);
+  t.notEqual(Hash, null);
 });
+
+tape('Hash.subscribre is a singleton', function(t) {
+  t.plan(1);
+  var hashInstance = Hash;
+  t.equal(hashInstance, Hash);
+});
+

@@ -4,9 +4,9 @@
   "description": "Subscribe your components to the browser Hash, and get change notifications",
   "main": "src/index.js",
   "scripts": {
-    "hint": "jshint --reporter node_modules/jshint-reporter-jscs src/*.js",
-    "dev": "watch 'npm run hint && npm run test' src -d",
-    "test": "mocha test/tests.js"
+    "lint": "semistandard src/**/*.js",
+    "dev": "watch 'npm run test' src test -d",
+    "test": "npm run lint && browserify test/tests.js | ghostface"
   },
   "repository": {
     "type": "git",
@@ -27,11 +27,12 @@
   },
   "homepage": "https://github.com/raiseandfall/Hash.subscribe#readme",
   "devDependencies": {
+    "browserify": "^12.0.1",
     "extend": "^3.0.0",
-    "jshint": "^2.8.0",
-    "jshint-reporter-jscs": "^0.1.0",
-    "jshint-stylish": "^2.0.1",
+    "ghostface": "^1.5.0",
     "mocha": "^2.2.5",
+    "semistandard": "^7.0.2",
+    "tape": "^4.2.2",
     "watch": "^0.16.0"
   },
   "dependencies": {

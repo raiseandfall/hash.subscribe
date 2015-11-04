@@ -1,12 +1,12 @@
 var clone = require('clone');
 
-var Subscriber = function(hashParams, cb) {
+var Subscriber = function (hashParams, cb) {
   'use strict';
-  
-  var _subscriptions = hashParams,
-    _cb = cb;
 
-  var notify = function(params) {
+  var _subscriptions = hashParams;
+  var _cb = cb;
+
+  var notify = function (params) {
     _cb.call(this.params);
   };
 
@@ -16,7 +16,7 @@ var Subscriber = function(hashParams, cb) {
   };
 };
 
-var Hash = (function() {
+var Hash = (function () {
   'use strict';
 
   // Init
@@ -32,12 +32,12 @@ var Hash = (function() {
   // @function      init
   // @role          called to initialize a default hash
   //
-  var init = function(defaultHash) {
+  var init = function (defaultHash) {
     // Setup
     if (isHashChangeSupported()) {
-      if (window.addEventListener){
+      if (window.addEventListener) {
         window.addEventListener('hashchange', checkIfHashHasChanged, false);
-      } else if (window.attachEvent){
+      } else if (window.attachEvent) {
         window.attachEvent('onhashchange', checkIfHashHasChanged);
       }
     } else {
@@ -61,7 +61,7 @@ var Hash = (function() {
   // @role          is the element an array
   // @returns       boolean
   //
-  var isArr = function(obj) {
+  var isArr = function (obj) {
     return Object.prototype.toString.call(obj) === '[object Array]';
   };
 
@@ -69,16 +69,16 @@ var Hash = (function() {
   // @role          are two values equal
   // @returns       boolean
   //
-  var areEqual = function(obj1, obj2) {
+  var areEqual = function (obj1, obj2) {
     // If new obj2 is undefined or null -> new param
-    if (typeof obj2 === "undefined" || obj2 === null) {
+    if (typeof obj2 === 'undefined' || obj2 === null) {
       return true;
     }
 
     // Strings ?
     if (typeof obj1 === 'string') {
       return obj1 === obj2;
-      // Arrays ?
+    // Arrays ?
     } else if (isArr(obj1) && isArr(obj2)) {
       if (obj1.length !== obj2.length) {
         return true;
@@ -87,33 +87,29 @@ var Hash = (function() {
     }
   };
 
-
-
   // @function      getHash
   // @role          get current hash
   // @returns       string
   //
-  var getHash = function() {
+  var getHash = function () {
     var index = window.location.href.indexOf('#');
-    return (index == -1 ? '' : window.location.href.substr(index + 1));
+    return (index === -1 ? '' : window.location.href.substr(index + 1));
   };
-
 
   // @function      isHashChangeSupported
   // @role          check if hash changed is supported
   // @returns       boolean
   //
-  var isHashChangeSupported = function() {
+  var isHashChangeSupported = function () {
     var eventName = 'onhashchange';
     var isSupported = (eventName in document.body);
     if (!isSupported) {
       document.body.setAttribute(eventName, 'return;');
-      isSupported = typeof document.body[eventName] == 'function';
+      isSupported = typeof document.body[eventName] === 'function';
     }
     // documentMode logic from YUI to filter out IE8 Compat Mode (which generates false positives).
     return isSupported && (document.documentMode === undefined || document.documentMode > 7);
   };
-
 
   // @function      checkIfHashHasChanged
   // @role          check if hash changed
@@ -134,7 +130,6 @@ var Hash = (function() {
     }
   };
 
-
   // @function      setHash
   // @role          set hash
   //
@@ -149,7 +144,7 @@ var Hash = (function() {
   // @role          build hash params array from hash string
   // @returns       Array of hash params (names & values)
   //
-  var getHashParams = function(pHashStr) {
+  var getHashParams = function (pHashStr) {
     // Use current hash if not specified
     var hashStr = pHashStr || getHash();
 
@@ -173,7 +168,7 @@ var Hash = (function() {
   // @function      setHashParams
   // @role          set hash params
   //
-  var setHashParams = function(hashParamsArr) {
+  var setHashParams = function (hashParamsArr) {
     var hashStr = buildHashFromParams(hashParamsArr);
     setHash(hashStr);
   };
@@ -182,7 +177,7 @@ var Hash = (function() {
   // @role          update hash key value
   // @params        key - hash param
   //
-  var updateHashKeyValue = function(key, value) {
+  var updateHashKeyValue = function (key, value) {
     var curParams = clone(_fn.hashParams);
     curParams[key] = value;
     // Set hash params
@@ -193,7 +188,7 @@ var Hash = (function() {
   // @role          build hash from params
   // @returns       string
   //
-  var buildHashFromParams = function(hashParamsArr) {
+  var buildHashFromParams = function (hashParamsArr) {
     var hashParams = [];
     for (var i in hashParamsArr) {
       hashParams.push(i + '=' + (isArr(hashParamsArr[i]) ? hashParamsArr[i].join(',') : hashParamsArr[i]));
@@ -204,7 +199,7 @@ var Hash = (function() {
   // @function      hashHasChanged
   // @role          called when hash has changed
   //
-  var hashHasChanged = function(curHash) {
+  var hashHasChanged = function (curHash) {
     var tmpHashParams = getHashParams(curHash);
     var changedParams = getChangedParams(tmpHashParams);
     _fn.hashParams = clone(tmpHashParams);
@@ -217,7 +212,7 @@ var Hash = (function() {
   // @role          Get the paramaters that changed since last hash change
   // @returns       Array of changed params
   //
-  var getChangedParams = function(params) {
+  var getChangedParams = function (params) {
     var changed = {};
 
     // For each param
@@ -231,14 +226,13 @@ var Hash = (function() {
     return changed;
   };
 
-
   // @function      subscribe
   // @role          subscribe to hash
   //
-  var subscribe = function(hashParams, cb) {
+  var subscribe = function (hashParams, cb) {
     // New subscriber
-    var subscriber = new Subscriber(hashParams, cb),
-      subscriberIdx = _fn.subscribers.push(subscriber);
+    var subscriber = new Subscriber(hashParams, cb);
+    var subscriberIdx = _fn.subscribers.push(subscriber);
 
     // Register params that subscriber is subscribing to
     for (var p in hashParams) {
@@ -253,10 +247,10 @@ var Hash = (function() {
   // @function      notifySubscribers
   // @role          Notify subscribers if one of the parameters they subscribed to has changed
   //
-  var notifySubscribers = function(params) {
+  var notifySubscribers = function (params) {
     for (var s in _fn.subscribers) {
-      var subscriptions = _fn.subscribers[s].subscriptions(),
-        paramsToNotify = {};
+      var subscriptions = _fn.subscribers[s].subscriptions();
+      var paramsToNotify = {};
 
       for (var ss in subscriptions) {
         var subscription = subscriptions[ss];
@@ -272,15 +266,15 @@ var Hash = (function() {
   };
 
   // Mute
-  var mute = function() {
+  var mute = function () {
     _fn.muted = true;
   };
-  var unmute = function() {
+  var unmute = function () {
     _fn.muted = false;
   };
 
   return {
-    getInstance: function() {
+    getInstance: function () {
       if (this._instance === null) {
         this._instance = Hash;
       }
