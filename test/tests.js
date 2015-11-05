@@ -1,8 +1,7 @@
-'use strict'
+'use strict';
 
+var Hash = require('../');
 var tape = require('tape');
-var Hash = require('../hash');
-console.log('t:', Hash);
 
 tape('Hash.subscribe is defined', function(t) {
   t.plan(1);
@@ -15,15 +14,28 @@ tape('Hash.subscribe is a singleton', function(t) {
   t.deepEqual(hashInstance, Hash);
 });
 
-tape('Hash can be initialized', function(t) {
+tape('Hash can be initialized with a default hash', function(t) {
   t.plan(1);
   var initHash = 'foo=bar';
+  Hash.init(initHash);
+  t.equal(window.location.hash, '#'+initHash);
+});
 
-console.log('t:',Hash);
+tape('The current hash can be retrieved as a string', function(t) {
+  t.plan(1);
+  var initHash = 'foo=bar';
+  Hash.init(initHash);
+  var currentHash = Hash.getHash();
+  t.equal(currentHash, initHash);
+});
 
-  //Hash.init(initHash);
+tape('The hash can be set as a string and retrieved as an array of parameters', function(t) {
+  t.plan(1);
+  var initHash = 'foo=bar1,bar2&baz=qux';
+  var mockHash = {'foo': ['bar1', 'bar2'], 'baz': ['qux']};
+  Hash.init();
+  Hash.setHash(initHash);
+  var currentHashParams = Hash.getHashParams();
 
-  console.log(window.location.hash);
-
-  t.equal(window.location.hash, initHash);
+  t.deepEqual(currentHashParams, mockHash);
 });
