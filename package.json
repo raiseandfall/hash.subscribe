@@ -2,15 +2,18 @@
   "name": "hash.subscribe",
   "version": "0.0.0",
   "description": "Subscribe your components to the browser Hash, and get change notifications",
-  "main": "index.js",
   "scripts": {
-    "lint": "semistandard src/**/*.js",
-    "dev": "watch 'npm run test' src test -d",
+    "lint": "semistandard index.js",
+    "dev": "watch 'npm run test' ./ test -d",
     "test": "npm run lint && browserify test/tests.js | ghostface"
   },
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/raiseandfall/Hash.subscribe.git"
+  },
+  "engines": {
+    "node": ">=0.10.x"
   },
   "keywords": [
     "hash",
@@ -30,8 +33,8 @@
     "browserify": "^12.0.1",
     "extend": "^3.0.0",
     "ghostface": "^1.5.0",
-    "mocha": "^2.2.5",
     "semistandard": "^7.0.2",
+    "tape": "^4.2.2",
     "watch": "^0.16.0"
   },
   "dependencies": {

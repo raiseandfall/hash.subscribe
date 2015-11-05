@@ -275,7 +275,7 @@ var Hash = (function () {
 
   return {
     getInstance: function () {
-      if (this._instance === null) {
+      if (!this._instance) {
         this._instance = Hash;
       }
       return this._instance;
