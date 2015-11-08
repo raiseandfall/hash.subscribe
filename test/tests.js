@@ -36,6 +36,36 @@ tape('The hash can be set as a string and retrieved as an array of parameters', 
   Hash.init();
   Hash.setHash(initHash);
   var currentHashParams = Hash.getHashParams();
-
   t.deepEqual(currentHashParams, mockHash);
+});
+
+tape('Should be able to subscribe to Hash and receive change notifications', function(t) {
+  t.plan(1);
+  
+  var initHash = 'foo=bar';
+  var updatedHash = 'foo=bar1';
+  Hash.subscribe(['foo'], function(c) {
+    if (c.foo.changed) {
+      t.deepEqual(c.foo.values, ['bar']);
+    } else {
+      t.fail();
+    }
+  });
+  Hash.init(initHash);
+  //Hash.setHash(updatedHash);
+});
+
+tape('Should be able to subscribe to only specific parameters', function(t) {
+  //t.plan(1);
+  t.end();
+});
+
+tape('Should be able to mute subscription', function(t) {
+  //t.plan(1);
+  t.end();
+});
+
+tape('Should be able to resume subscription', function(t) {
+  //t.plan(1);
+  t.end();
 });

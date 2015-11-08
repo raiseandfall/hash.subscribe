@@ -249,7 +249,7 @@ var Hash = (function () {
   //
   var notifySubscribers = function (params) {
     for (var s in _fn.subscribers) {
-      var subscriptions = _fn.subscribers[s].subscriptions();
+      var subscriptions = _fn.subscribers[s].subscriptions;
       var paramsToNotify = {};
 
       for (var ss in subscriptions) {
