@@ -1,4 +1,7 @@
-# Hash.subscribe [![Build Status](https://travis-ci.org/raiseandfall/Hash.subscribe.svg)](https://travis-ci.org/raiseandfall/Hash.subscribe)
+# Hash.subscribe 
+
+[![Build Status](https://travis-ci.org/raiseandfall/Hash.subscribe.svg)](https://travis-ci.org/raiseandfall/Hash.subscribe)
+[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
 
 A browser hash listener system using query string style parameters ( `#foo=bar&baz=qux` ), based on the subscribe design pattern.  
 
