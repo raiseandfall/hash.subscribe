@@ -29,9 +29,13 @@ var Hash = (function () {
     muted: false
   };
 
-  // @function      init
-  // @role          called to initialize a default hash
-  //
+  /**
+   * @function    init
+   * @description Called to initialize, optionally giving a default hash
+   *
+   * @param       defaultHash - Array | String - default hash
+   *
+   **/
   var init = function (defaultHash) {
     // Setup
     if (isHashChangeSupported()) {
@@ -52,9 +56,22 @@ var Hash = (function () {
     var curHash = getHash();
     if (curHash !== '') {
       checkIfHashHasChanged();
-    } else if (defaultHash !== '') {
+    } else if (defaultHash) {
       setHash(defaultHash);
     }
+  };
+
+  /**
+   * @function    destroy
+   * @description Destroy current Hash & subscribers
+   *
+   **/
+  var destroy = function () {
+    // Destroy subscribers
+    _fn.subscribers = [];
+    // Destroy hash
+    setHash('');
+    // history.pushState('', document.title, window.location.pathname);
   };
 
   // @function      isArr
@@ -119,11 +136,11 @@ var Hash = (function () {
     if (curHash !== _fn.hash && !_fn.muted) {
       // Hash has changed
       hashHasChanged(curHash);
-    }
 
-    // Save for later
-    _fn.hash = curHash;
-    _fn.hashParams = clone(getHashParams(curHash));
+      // Save for later
+      _fn.hash = curHash;
+      _fn.hashParams = clone(getHashParams(curHash));
+    }
 
     if (_fn.muted) {
       unmute();
@@ -134,9 +151,15 @@ var Hash = (function () {
   // @role          set hash
   //
   var setHash = function (newHash) {
+    // Type
+    if (typeof newHash !== 'string') {
+      newHash = buildHashFromParams(newHash);
+    }
+    console.log('1 - PASS', newHash, _fn.hash);
     if (newHash === _fn.hash) {
       return;
     }
+    console.log('2 - PASS', newHash);
     window.location.hash = newHash;
   };
 
@@ -288,7 +311,8 @@ var Hash = (function () {
     updateHashKeyValue: updateHashKeyValue,
     init: init,
     mute: mute,
-    unmute: unmute
+    unmute: unmute,
+    destroy: destroy
   };
 })();
 

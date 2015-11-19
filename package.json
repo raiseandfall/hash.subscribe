@@ -4,8 +4,8 @@
   "description": "Subscribe your components to the browser Hash, and get change notifications",
   "scripts": {
     "lint": "semistandard index.js",
-    "dev": "watch 'npm run test' ./ test -d",
-    "test": "npm run lint && browserify test/tests.js | ghostface | faucet"
+    "dev": "watch 'npm test' **/*.js -d",
+    "test": "npm run lint && browserify test/tests.js | ghostface"
   },
   "main": "index.js",
   "repository": {
@@ -34,8 +34,10 @@
     "extend": "^3.0.0",
     "faucet": "0.0.1",
     "ghostface": "^1.5.0",
+    "redtape": "^1.0.0",
     "semistandard": "^7.0.2",
     "tape": "^4.2.2",
+    "tapes": "^2.0.0",
     "watch": "^0.16.0"
   },
   "dependencies": {
