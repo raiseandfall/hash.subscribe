@@ -1,12 +1,12 @@
 'use strict';
 
-var Hash = require('../');
+var Hash = require('./');
 var test = require('tapes');
 
 test('Testing initialization', function(t) {
   // Before Each
   t.afterEach(function(t) {
-    Hash.destroy();
+    Hash.setHash('');
     t.end();
   });
 
@@ -19,10 +19,6 @@ test('Testing initialization', function(t) {
     t.plan(1);
     var hashInstance = Hash;
     t.deepEqual(hashInstance, Hash);
-
-    t.test('teardown', function(t) {
-      Hash.destroy();
-    });
   });
 
   t.test('Hash can be initialized with a default hash String', function(t) {
@@ -32,42 +28,60 @@ test('Testing initialization', function(t) {
     t.equal(window.location.hash, '#'+initHash);
   });
 
-  t.test('Hash can be initialized with a default hash String containing the Hash character', function(t) {
+  t.end();
+});
+
+test('Testing setters', function(t) {
+  t.afterEach(function(t) {
+    Hash.setHash('');
+    t.end();
+  });
+
+  t.test('Hash can be set with a default hash String containing the Hash character', function(t) {
     t.plan(1);
     var initHash = '#foo=bar';
     Hash.init(initHash);
     t.equal(window.location.hash, initHash);
   });
 
-  t.test('Hash can be initialized with a default hash Object', function(t) {
+  t.test('Hash can be set with a default hash Object', function(t) {
     t.plan(1);
-    var initHash = {'foo': ['bar']};
-    var mockHashStr = '#foo=bar';
+    var initHash = {'baz': ['qux','fubar']};
+    var mockHashStr = '#baz=qux,fubar';
     Hash.init(initHash);
     t.equal(window.location.hash, mockHashStr);
+  });
+
+  t.test('Can update one parameter only', function(t) {
+    t.plan(2);
+    var initHash = {'baz': ['qux'], 'foo': ['bar']};
+    Hash.init(initHash);
+    t.equal(Hash.getHash(), 'baz=qux&foo=bar');
+    Hash.updateHashKeyValue('foo', ['bar1', 'bar2']);
+    t.equal(Hash.getHash(), 'baz=qux&foo=bar1,bar2');
   });
 
   t.end();
 });
 
-test('Testing Hash Manipulation', function(t) {
+test('Testing getters', function(t) {
   // Before Each
   t.afterEach(function(t) {
-    Hash.destroy();
+    Hash.setHash('');
     t.end();
   });
 
-  t.test('The current hash can be retrieved as a string', function(t) {
+  t.test('getHash returns the hash as a string', function(t) {
     t.plan(1);
     var initHash = 'foo=bar';
-    Hash.init(initHash);
+    Hash.setHash(initHash);
     var currentHash = Hash.getHash();
     t.equal(currentHash, initHash);
   });
 
-  t.test('The hash can be set as a string and retrieved as an array of parameters', function(t) {
+  t.test('getHash returns the hash as an array of parameters', function(t) {
     t.plan(1);
-    var initHash = 'foo=bar1,bar2&baz=qux';
+    var initHash = 'baz=qux&foo=bar1,bar2';
     var mockHash = {'foo': ['bar1', 'bar2'], 'baz': ['qux']};
     Hash.init();
     Hash.setHash(initHash);
@@ -81,7 +95,7 @@ test('Testing Hash Manipulation', function(t) {
 test('Testing Hash Subscription', function(t) {
   // Before Each
   t.afterEach(function(t) {
-    Hash.destroy();
+    Hash.setHash('');
     t.end();
   });
 
@@ -89,31 +103,33 @@ test('Testing Hash Subscription', function(t) {
     t.plan(1);
 
     var initHash = 'foo=bar';
+    Hash.init(initHash);
     var updatedHash = 'foo=bar1';
     Hash.subscribe(['foo'], function(c) {
       if (c.foo.changed) {
-        t.deepEqual(c.foo.values, ['bar']);
+        t.deepEqual(c.foo.values, ['bar1']);
       } else {
         t.fail();
       }
     });
-    Hash.init(initHash);
-    //Hash.setHash(updatedHash);
-  });
-
-  t.test('Should be able to subscribe to only specific parameters', function(t) {
-    //t.plan(1);
-    t.end();
+    Hash.setHash(updatedHash);
   });
 
   t.test('Should be able to mute subscription', function(t) {
-    //t.plan(1);
-    t.end();
-  });
+    t.plan(1);
 
-  t.test('Should be able to resume subscription', function(t) {
-    //t.plan(1);
-    t.end();
+    Hash.setHash('baz=qux');
+    Hash.subscribe(['baz'], function(c) {
+      if (c.baz.changed) {
+        t.deepEqual(c.baz.values, ['qux2']);
+      } else {
+        t.fail();
+      }
+    });
+    Hash.mute();
+    Hash.setHash('baz=qux1');
+    Hash.unmute();
+    Hash.setHash('baz=qux2');
   });
 
   t.end();

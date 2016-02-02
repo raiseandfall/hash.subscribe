@@ -4,8 +4,8 @@
   "description": "Subscribe your components to the browser Hash, and get change notifications",
   "scripts": {
     "lint": "semistandard index.js",
-    "dev": "watch 'npm test' **/*.js -d",
-    "test": "npm run lint && browserify test/tests.js | ghostface"
+    "dev": "nodemon -q -x 'npm test'",
+    "test": "npm run lint && browserify tests.js | ghostface | tap-set-exit | faucet"
   },
   "main": "index.js",
   "repository": {
@@ -30,15 +30,16 @@
   },
   "homepage": "https://github.com/raiseandfall/Hash.subscribe#readme",
   "devDependencies": {
-    "browserify": "^12.0.1",
+    "browserify": "^13.0.0",
     "extend": "^3.0.0",
     "faucet": "0.0.1",
     "ghostface": "^1.5.0",
+    "nodemon": "^1.8.1",
     "redtape": "^1.0.0",
-    "semistandard": "^7.0.2",
-    "tape": "^4.2.2",
-    "tapes": "^2.0.0",
-    "watch": "^0.16.0"
+    "semistandard": "^7.0.5",
+    "tap-set-exit": "^1.1.1",
+    "tape": "^4.4.0",
+    "tapes": "^3.1.0"
   },
   "dependencies": {
     "clone": "^1.0.2"

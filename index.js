@@ -7,7 +7,7 @@ var Subscriber = function (hashParams, cb) {
   var _cb = cb;
 
   var notify = function (params) {
-    _cb.call(this.params);
+    _cb.call(this, params);
   };
 
   return {
@@ -33,7 +33,7 @@ var Hash = (function () {
    * @function    init
    * @description Called to initialize, optionally giving a default hash
    *
-   * @param       defaultHash - Array | String - default hash
+   * @param       defaultHash - Object | String - default hash
    *
    **/
   var init = function (defaultHash) {
@@ -106,11 +106,13 @@ var Hash = (function () {
 
   // @function      getHash
   // @role          get current hash
+  // @parameter     keepHash : boolean - default: false
+  //                whether or not to keep the hash character in return string
   // @returns       string
   //
-  var getHash = function () {
-    var index = window.location.href.indexOf('#');
-    return (index === -1 ? '' : window.location.href.substr(index + 1));
+  var getHash = function (keepHash) {
+    keepHash = keepHash || false;
+    return window.location.hash.slice(keepHash ? 0 : 1);
   };
 
   // @function      isHashChangeSupported
@@ -154,12 +156,15 @@ var Hash = (function () {
     // Type
     if (typeof newHash !== 'string') {
       newHash = buildHashFromParams(newHash);
+    } else {
+      if (newHash !== '' && newHash.charAt(0) !== '#') {
+        newHash = '#' + newHash;
+      }
     }
-    console.log('1 - PASS', newHash, _fn.hash);
     if (newHash === _fn.hash) {
       return;
     }
-    console.log('2 - PASS', newHash);
+    _fn.hashParams = getHashParams(newHash);
     window.location.hash = newHash;
   };
 
@@ -211,10 +216,10 @@ var Hash = (function () {
   // @role          build hash from params
   // @returns       string
   //
-  var buildHashFromParams = function (hashParamsArr) {
+  var buildHashFromParams = function (hashParamsObj) {
     var hashParams = [];
-    for (var i in hashParamsArr) {
-      hashParams.push(i + '=' + (isArr(hashParamsArr[i]) ? hashParamsArr[i].join(',') : hashParamsArr[i]));
+    for (var i in hashParamsObj) {
+      hashParams.push(i + '=' + (isArr(hashParamsObj[i]) ? hashParamsObj[i].join(',') : hashParamsObj[i]));
     }
     return hashParams.join('&');
   };
