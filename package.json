@@ -1,6 +1,6 @@
 {
   "name": "hash.subscribe",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Subscribe your components to the browser Hash, and get change notifications",
   "scripts": {
     "lint": "semistandard index.js",
