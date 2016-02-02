@@ -11,12 +11,12 @@ Features:
 - Set specific Hash parameter
 - Mute / Unmute subscription
 
-## Still in early development.
-
 ## [CHANGELOG](./CHANGELOG.md)
 
 ## INSTALL
-Coming soon.
+```shell
+$ npm install hash.subscribe
+```
 
 ## USAGE
 ```javascript
@@ -25,6 +25,18 @@ var Hash = require('hash.subscribe');
 // Init browser hash
 Hash.init('foo=bar');
 
+// Set parameters (object)
+Hash.setHash({
+  foo: ['bar'],
+  baz: ['qux']
+});
+
+// Set hash (string)
+Hash.setHash('foo=bar&baz=qux');
+
+// Update one key value
+Hash.updateHashKeyValue('foo', ['bar1', 'bar2']);
+
 // Subscribe to parameter(s)
 Hash.subscribe(['foo', 'baz'], function(params) {
   if (params.foo.changed) {
@@ -32,25 +44,46 @@ Hash.subscribe(['foo', 'baz'], function(params) {
   }
 });
 
-// Set parameters
-myHash.setHashParams({
-  foo: ['bar'],
-  baz: ['qux']
-});
+// More examples in the test file...
 ```
 
 ## API
 
 ### `init(hash)`
 Parameter:  
-- `hash` - String - default hash to initialize the page with
+- `hash` - String | Object - default hash to initialize the page with
+
+### `getHash(keepHash)`
+Get current hash  
+Parameter:  
+- `keepHash` - Boolean - whether or not to keep the hash character in the return string  
+Returns: String
+
+### `setHash(hash)`
+Updates current hash  
+Parameter:  
+- `hash` - String | Object - default hash to initialize the page with
+
+### `updateHashKeyValue(key, value)`
+Updates one hash key  
+Parameters:  
+- `key` - String - hash key to update  
+- `value` - Array - new value(s) for key  
 
 ### `subscribe([hashParameters], callback)`
+Subscribe to specific parameters  
 Parameters:  
 - `hashParameters` - Array - Array of parameters names you want to subscribe to
 - `callback` - Function - Callback function called when a parameter has changed
 
-### ``
+### `mute()`
+Mutes subscription to Hash
+
+### `unmute()`
+Resume subscription to Hash  
+
+### `destroy()` 
+Destroys current hash value
 
 ## CONTRIBUTE
 

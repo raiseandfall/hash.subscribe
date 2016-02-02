@@ -28,7 +28,7 @@
   "bugs": {
     "url": "https://github.com/raiseandfall/Hash.subscribe/issues"
   },
-  "homepage": "https://github.com/raiseandfall/Hash.subscribe#readme",
+  "homepage": "https://github.com/raiseandfall/Hash.subscribe",
   "devDependencies": {
     "browserify": "^13.0.0",
     "extend": "^3.0.0",

@@ -193,14 +193,6 @@ var Hash = (function () {
     return currHashParams;
   };
 
-  // @function      setHashParams
-  // @role          set hash params
-  //
-  var setHashParams = function (hashParamsArr) {
-    var hashStr = buildHashFromParams(hashParamsArr);
-    setHash(hashStr);
-  };
-
   // @function      updateHashKeyValue
   // @role          update hash key value
   // @params        key - hash param
@@ -209,7 +201,7 @@ var Hash = (function () {
     var curParams = clone(_fn.hashParams);
     curParams[key] = value;
     // Set hash params
-    setHashParams(curParams);
+    setHash(curParams);
   };
 
   // @function      buildHashFromParams
@@ -312,7 +304,6 @@ var Hash = (function () {
     getHash: getHash,
     setHash: setHash,
     getHashParams: getHashParams,
-    setHashParams: setHashParams,
     updateHashKeyValue: updateHashKeyValue,
     init: init,
     mute: mute,
