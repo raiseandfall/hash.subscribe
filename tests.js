@@ -132,5 +132,17 @@ test('Testing Hash Subscription', function(t) {
     Hash.setHash('baz=qux2');
   });
 
+  t.test('Should receive notification changed=false when hash param does not change', function(t) {
+    t.plan(2);
+
+    var initHash = 'bar=1&hoo=1';
+    Hash.setHash(initHash);
+    Hash.subscribe(['bar', 'hoo'], function(c) {
+      t.equal(c.bar.changed, true);
+      t.equal(c.hoo.changed, false);
+    });
+    window.location.hash = 'bar=2&hoo=1';
+  });
+
   t.end();
 });
