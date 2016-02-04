@@ -26,14 +26,15 @@ var Hash = (function () {
     subscribers: [],
     subscribedPerParams: {},
     history: window.history,
-    muted: false
+    muted: false,
+    interval: null
   };
 
   /**
-   * @function    init
-   * @description Called to initialize, optionally giving a default hash
+   * @function      init
+   * @description   Called to initialize, optionally giving a default hash
    *
-   * @param       defaultHash - Object | String - default hash
+   * @param         defaultHash - Object | String - default hash
    *
    **/
   var init = function (defaultHash) {
@@ -49,7 +50,7 @@ var Hash = (function () {
       if (_fn.history.navigationMode) {
         _fn.history.navigationMode = 'compatible';
       }
-      setInterval(checkIfHashHasChanged, 50);
+      _fn.interval = setInterval(checkIfHashHasChanged, 50);
     }
 
     // First default hash ( direct access or default )
@@ -58,15 +59,26 @@ var Hash = (function () {
       checkIfHashHasChanged();
     } else if (defaultHash) {
       setHash(defaultHash);
+      saveHash(Hash.getHash());
     }
   };
 
   /**
-   * @function    destroy
-   * @description Destroy current Hash & subscribers
-   *
+   * @function      destroy
+   * @description   Destroys current Hash & subscribers
    **/
   var destroy = function () {
+    // Setup
+    if (isHashChangeSupported()) {
+      if (window.addEventListener) {
+        window.removeEventListener('hashchange', checkIfHashHasChanged);
+      } else if (window.attachEvent) {
+        window.detachEvent('onhashchange', checkIfHashHasChanged);
+      }
+    } else {
+      clearInterval(_fn.interval);
+    }
+
     // Destroy subscribers
     _fn.subscribers = [];
     // Destroy hash
@@ -74,18 +86,21 @@ var Hash = (function () {
     // history.pushState('', document.title, window.location.pathname);
   };
 
-  // @function      isArr
-  // @role          is the element an array
-  // @returns       boolean
-  //
+  /**
+   * @function      isArr
+   * @description   Is the element an array
+   * @param         obj - Object - is object an array?
+   * @returns       boolean
+   **/
   var isArr = function (obj) {
     return Object.prototype.toString.call(obj) === '[object Array]';
   };
 
-  // @function      areEqual
-  // @role          are two values equal
-  // @returns       boolean
-  //
+  /**
+   * @function      areEqual
+   * @description   Are two values equal?
+   * @returns       boolean
+   **/
   var areEqual = function (obj1, obj2) {
     // If new obj2 is undefined or null -> new param
     if (typeof obj2 === 'undefined' || obj2 === null) {
@@ -104,21 +119,23 @@ var Hash = (function () {
     }
   };
 
-  // @function      getHash
-  // @role          get current hash
-  // @parameter     keepHash : boolean - default: false
-  //                whether or not to keep the hash character in return string
-  // @returns       string
-  //
+  /**
+   * @function      getHash
+   * @description   Gets current hash
+   * @param         keepHash : boolean - default: false
+   *                whether or not to keep the hash character in return string
+   * @returns       string
+   **/
   var getHash = function (keepHash) {
     keepHash = keepHash || false;
     return window.location.hash.slice(keepHash ? 0 : 1);
   };
 
-  // @function      isHashChangeSupported
-  // @role          check if hash changed is supported
-  // @returns       boolean
-  //
+  /**
+   * @function      isHashChangeSupported
+   * @description   Checks if hash changed is supported
+   * @returns       boolean
+   **/
   var isHashChangeSupported = function () {
     var eventName = 'onhashchange';
     var isSupported = (eventName in document.body);
@@ -130,28 +147,36 @@ var Hash = (function () {
     return isSupported && (document.documentMode === undefined || document.documentMode > 7);
   };
 
-  // @function      checkIfHashHasChanged
-  // @role          check if hash changed
-  //
+  /**
+   * @function      checkIfHashHasChanged
+   * @description   Checks if hash changed
+   **/
   var checkIfHashHasChanged = function () {
     var curHash = getHash();
     if (curHash !== _fn.hash && !_fn.muted) {
       // Hash has changed
       hashHasChanged(curHash);
-
-      // Save for later
-      _fn.hash = curHash;
-      _fn.hashParams = clone(getHashParams(curHash));
     }
+
+    // Save for later
+    saveHash(curHash);
 
     if (_fn.muted) {
       unmute();
     }
   };
 
-  // @function      setHash
-  // @role          set hash
-  //
+  // Save hash for later
+  var saveHash = function (curHash) {
+    _fn.hash = curHash;
+    _fn.hashParams = clone(getHashParams(curHash));
+  };
+
+  /**
+   * @function      setHash
+   * @description   Sets hash
+   * @param         newHash - string - new hash
+   **/
   var setHash = function (newHash) {
     // Type
     if (typeof newHash !== 'string') {
@@ -164,17 +189,18 @@ var Hash = (function () {
     if (newHash === _fn.hash) {
       return;
     }
-    _fn.hashParams = getHashParams(newHash);
     window.location.hash = newHash;
   };
 
-  // @function      getHashParams
-  // @role          build hash params array from hash string
-  // @returns       Array of hash params (names & values)
-  //
-  var getHashParams = function (pHashStr) {
+  /**
+   * @function      getHashParams
+   * @description   Build hash params array from hash string
+   * @param         hashStr - string - hash
+   * @returns       Array of hash params (names & values)
+   **/
+  var getHashParams = function (hashStr) {
     // Use current hash if not specified
-    var hashStr = pHashStr || getHash();
+    hashStr = hashStr || getHash();
 
     var currHashParams = {};
 
@@ -193,21 +219,26 @@ var Hash = (function () {
     return currHashParams;
   };
 
-  // @function      updateHashKeyValue
-  // @role          update hash key value
-  // @params        key - hash param
-  //
+  /**
+   * @function      updateHashKeyValue
+   * @description   Updates hash key value
+   * @param         key - hash param
+   * @param         value - hash param value
+   **/
   var updateHashKeyValue = function (key, value) {
     var curParams = clone(_fn.hashParams);
     curParams[key] = value;
+
     // Set hash params
     setHash(curParams);
   };
 
-  // @function      buildHashFromParams
-  // @role          build hash from params
-  // @returns       string
-  //
+  /**
+   * @function      buildHashFromParams
+   * @description    Build hash from params
+   * @param         hashParamsObj - Object - Hash parameters
+   * @returns       string
+   **/
   var buildHashFromParams = function (hashParamsObj) {
     var hashParams = [];
     for (var i in hashParamsObj) {
@@ -216,9 +247,11 @@ var Hash = (function () {
     return hashParams.join('&');
   };
 
-  // @function      hashHasChanged
-  // @role          called when hash has changed
-  //
+  /**
+   * @function      hashHasChanged
+   * @description   Called when hash has changed
+   * @param         curHash - string - current hash
+   **/
   var hashHasChanged = function (curHash) {
     var tmpHashParams = getHashParams(curHash);
     var changedParams = getChangedParams(tmpHashParams);
@@ -228,10 +261,12 @@ var Hash = (function () {
     }
   };
 
-  // @function      getChangedParams
-  // @role          Get the paramaters that changed since last hash change
-  // @returns       Array of changed params
-  //
+  /**
+   * @function      getChangedParams
+   * @description   Get the paramaters that changed since last hash change
+   * @param         params - Object - hash parameters
+   * @returns       Array of changed params
+   **/
   var getChangedParams = function (params) {
     var changed = {};
 
@@ -246,9 +281,12 @@ var Hash = (function () {
     return changed;
   };
 
-  // @function      subscribe
-  // @role          subscribe to hash
-  //
+  /**
+   * @function      subscribe
+   * @param         hashParams - Array - array of hash parameters names
+   * @param         cb - function - callback function
+   * @description   subscribe to hash
+   **/
   var subscribe = function (hashParams, cb) {
     // New subscriber
     var subscriber = new Subscriber(hashParams, cb);
@@ -264,9 +302,11 @@ var Hash = (function () {
     }
   };
 
-  // @function      notifySubscribers
-  // @role          Notify subscribers if one of the parameters they subscribed to has changed
-  //
+  /**
+   * @function      notifySubscribers
+   * @description   Notify subscribers if one of the parameters they subscribed to has changed
+   * @param         params - Array
+   **/
   var notifySubscribers = function (params) {
     for (var s in _fn.subscribers) {
       var subscriptions = _fn.subscribers[s].subscriptions;
@@ -285,10 +325,18 @@ var Hash = (function () {
     }
   };
 
-  // Mute
+  /**
+   * @function      mute
+   * @description   mute subscription
+   **/
   var mute = function () {
     _fn.muted = true;
   };
+
+  /**
+   * @function      unmute
+   * @description   unmute subscription
+   **/
   var unmute = function () {
     _fn.muted = false;
   };

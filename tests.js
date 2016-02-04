@@ -6,7 +6,7 @@ var test = require('tapes');
 test('Testing initialization', function(t) {
   // Before Each
   t.afterEach(function(t) {
-    Hash.setHash('');
+    Hash.destroy();
     t.end();
   });
 
@@ -33,7 +33,7 @@ test('Testing initialization', function(t) {
 
 test('Testing setters', function(t) {
   t.afterEach(function(t) {
-    Hash.setHash('');
+    Hash.destroy();
     t.end();
   });
 
@@ -67,14 +67,14 @@ test('Testing setters', function(t) {
 test('Testing getters', function(t) {
   // Before Each
   t.afterEach(function(t) {
-    Hash.setHash('');
+    Hash.destroy();
     t.end();
   });
 
   t.test('getHash returns the hash as a string', function(t) {
     t.plan(1);
     var initHash = 'foo=bar';
-    Hash.setHash(initHash);
+    Hash.init(initHash);
     var currentHash = Hash.getHash();
     t.equal(currentHash, initHash);
   });
@@ -83,8 +83,7 @@ test('Testing getters', function(t) {
     t.plan(1);
     var initHash = 'baz=qux&foo=bar1,bar2';
     var mockHash = {'foo': ['bar1', 'bar2'], 'baz': ['qux']};
-    Hash.init();
-    Hash.setHash(initHash);
+    Hash.init(initHash);
     var currentHashParams = Hash.getHashParams();
     t.deepEqual(currentHashParams, mockHash);
   });
@@ -95,7 +94,7 @@ test('Testing getters', function(t) {
 test('Testing Hash Subscription', function(t) {
   // Before Each
   t.afterEach(function(t) {
-    Hash.setHash('');
+    Hash.destroy();
     t.end();
   });
 
@@ -118,7 +117,7 @@ test('Testing Hash Subscription', function(t) {
   t.test('Should be able to mute subscription', function(t) {
     t.plan(1);
 
-    Hash.setHash('baz=qux');
+    Hash.init('baz=qux');
     Hash.subscribe(['baz'], function(c) {
       if (c.baz.changed) {
         t.deepEqual(c.baz.values, ['qux2']);
@@ -136,7 +135,7 @@ test('Testing Hash Subscription', function(t) {
     t.plan(2);
 
     var initHash = 'bar=1&hoo=1';
-    Hash.setHash(initHash);
+    Hash.init(initHash);
     Hash.subscribe(['bar', 'hoo'], function(c) {
       t.equal(c.bar.changed, true);
       t.equal(c.hoo.changed, false);
