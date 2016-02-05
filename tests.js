@@ -82,9 +82,9 @@ test('Testing getters', function(t) {
   t.test('getHash returns the hash as an array of parameters', function(t) {
     t.plan(1);
     var initHash = 'baz=qux&foo=bar1,bar2';
-    var mockHash = {'foo': ['bar1', 'bar2'], 'baz': ['qux']};
+    var mockHash = {'foo': {values: ['bar1', 'bar2']}, 'baz': {values: ['qux']}};
     Hash.init(initHash);
-    var currentHashParams = Hash.getHashParams();
+    var currentHashParams = Hash.getParams();
     t.deepEqual(currentHashParams, mockHash);
   });
 

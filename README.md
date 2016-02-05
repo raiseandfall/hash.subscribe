@@ -59,6 +59,10 @@ Parameter:
 - `keepHash` - Boolean - whether or not to keep the hash character in the return string  
 Returns: String
 
+### `getParams`
+Get current has parameters  
+Returns: Object
+
 ### `setHash(hash)`
 Updates current hash  
 Parameter:  

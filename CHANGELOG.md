@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.0.0
+- Updated `getHashParams` to `getParams` function and changed array structure to
+  follow existing event data object  
+
 ## v1.1.0
 - Fixed bug in init that was not saving current hash
 - Fixed tests

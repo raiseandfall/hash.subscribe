@@ -169,7 +169,7 @@ var Hash = (function () {
   // Save hash for later
   var saveHash = function (curHash) {
     _fn.hash = curHash;
-    _fn.hashParams = clone(getHashParams(curHash));
+    _fn.hashParams = clone(getParamsFromHash(curHash));
   };
 
   /**
@@ -193,12 +193,12 @@ var Hash = (function () {
   };
 
   /**
-   * @function      getHashParams
+   * @function      getParamsFromHash
    * @description   Build hash params array from hash string
    * @param         hashStr - string - hash
    * @returns       Array of hash params (names & values)
    **/
-  var getHashParams = function (hashStr) {
+  var getParamsFromHash = function (hashStr) {
     // Use current hash if not specified
     hashStr = hashStr || getHash();
 
@@ -217,6 +217,16 @@ var Hash = (function () {
     }
 
     return currHashParams;
+  };
+
+  /**
+   * @function      getParams
+   * @description   Get hash params
+   * @returns       Object of hash params
+   **/
+  var getParams = function () {
+    var tmpHashParams = getParamsFromHash();
+    return getChangedParams(tmpHashParams, false);
   };
 
   /**
@@ -253,7 +263,7 @@ var Hash = (function () {
    * @param         curHash - string - current hash
    **/
   var hashHasChanged = function (curHash) {
-    var tmpHashParams = getHashParams(curHash);
+    var tmpHashParams = getParamsFromHash(curHash);
     var changedParams = getChangedParams(tmpHashParams);
     _fn.hashParams = clone(tmpHashParams);
     if (Object.keys(changedParams).length > 0) {
@@ -265,20 +275,23 @@ var Hash = (function () {
    * @function      getChangedParams
    * @description   Get the paramaters that changed since last hash change
    * @param         params - Object - hash parameters
+   *                includeChangedStatus - Boolean - include parameters changed status - default true
    * @returns       Array of changed params
    **/
-  var getChangedParams = function (params) {
-    var changed = {};
+  var getChangedParams = function (params, includeChangedStatus) {
+    var finalParams = {};
 
     // For each param
     for (var p in params) {
-      changed[p] = {
-        changed: areEqual(params[p], _fn.hashParams[p]),
+      finalParams[p] = {
         values: clone(params[p])
       };
+      if (includeChangedStatus !== false) {
+        finalParams[p].changed = areEqual(params[p], _fn.hashParams[p]);
+      }
     }
 
-    return changed;
+    return finalParams;
   };
 
   /**
@@ -351,7 +364,7 @@ var Hash = (function () {
     subscribe: subscribe,
     getHash: getHash,
     setHash: setHash,
-    getHashParams: getHashParams,
+    getParams: getParams,
     updateHashKeyValue: updateHashKeyValue,
     init: init,
     mute: mute,
