@@ -10,7 +10,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/raiseandfall/Hash.subscribe.git"
+    "url": "git+https://github.com/raiseandfall/hash.subscribe.git"
   },
   "engines": {
     "node": ">=0.10.x"
@@ -26,9 +26,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/raiseandfall/Hash.subscribe/issues"
+    "url": "https://github.com/raiseandfall/hash.subscribe/issues"
   },
-  "homepage": "https://github.com/raiseandfall/Hash.subscribe",
+  "homepage": "https://github.com/raiseandfall/hash.subscribe",
   "devDependencies": {
     "browserify": "^13.0.0",
     "extend": "^3.0.0",
