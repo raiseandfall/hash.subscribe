@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.0.1
+- [TEST] Added node 5.0 on travis config
+
 ## v2.0.0
 - Updated `getHashParams` to `getParams` function and changed array structure to
   follow existing event data object  
