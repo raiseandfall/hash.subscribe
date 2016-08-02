@@ -61,13 +61,13 @@ Parameter:
 Returns: String
 
 ### `getParams`
-Get current has parameters  
+Get current hash parameters  
 Returns: Object
 
 ### `setHash(hash)`
 Updates current hash  
 Parameter:  
-- `hash` - String | Object - default hash to initialize the page with
+- `hash` - String | Object - new hash
 
 ### `updateHashKeyValue(key, value)`
 Updates one hash key  
