@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.1.0
+- [FEAT] Added deleteParam method
+
 ## v2.0.1
 - [TEST] Added node 5.0 on travis config
 

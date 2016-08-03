@@ -244,8 +244,28 @@ var Hash = (function () {
   };
 
   /**
+   * @function      deleteParam
+   * @description   Deletes hash param(s)
+   * @param         key - string|array  - hash param(s) name(s)
+   **/
+  var deleteParam = function (params) {
+    if (!params) {
+      return false;
+    }
+    params = params.constructor !== Array ? [params] : params;
+
+    var curParams = clone(_fn.hashParams);
+    for (var i in params) {
+      delete curParams[params[i]];
+    }
+
+    // Set has params
+    setHash(curParams);
+  };
+
+  /**
    * @function      buildHashFromParams
-   * @description    Build hash from params
+   * @description   Build hash from params
    * @param         hashParamsObj - Object - Hash parameters
    * @returns       string
    **/
@@ -366,6 +386,7 @@ var Hash = (function () {
     setHash: setHash,
     getParams: getParams,
     updateHashKeyValue: updateHashKeyValue,
+    deleteParam: deleteParam,
     init: init,
     mute: mute,
     unmute: unmute,

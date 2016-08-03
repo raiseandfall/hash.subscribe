@@ -61,6 +61,24 @@ test('Testing setters', function(t) {
     t.equal(Hash.getHash(), 'baz=qux&foo=bar1,bar2');
   });
 
+  t.test('Can delete one parameter only', function(t) {
+    t.plan(2);
+    var initHash = {'qux': ['baz'], 'bar': ['foo']};
+    Hash.init(initHash);
+    t.equal(Hash.getHash(), 'qux=baz&bar=foo');
+    Hash.deleteParam('qux');
+    t.equal(Hash.getHash(), 'bar=foo');
+  });
+
+  t.test('Can delete several parameters', function(t) {
+    t.plan(2);
+    var initHash = {'baz': ['qux'], 'foo': ['bar'], 'place': ['holder']};
+    Hash.init(initHash);
+    t.equal(Hash.getHash(), 'baz=qux&foo=bar&place=holder');
+    Hash.deleteParam(['baz', 'place']);
+    t.equal(Hash.getHash(), 'foo=bar');
+  });
+
   t.end();
 });
 

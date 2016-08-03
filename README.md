@@ -38,6 +38,9 @@ Hash.setHash('foo=bar&baz=qux');
 // Update one key value
 Hash.updateHashKeyValue('foo', ['bar1', 'bar2']);
 
+// Delete one param
+Hash.deleteParam('baz');
+
 // Subscribe to parameter(s)
 Hash.subscribe(['foo', 'baz'], function(params) {
   if (params.foo.changed) {
@@ -74,6 +77,11 @@ Updates one hash key
 Parameters:  
 - `key` - String - hash key to update  
 - `value` - Array - new value(s) for key  
+
+### `deleteParam(params)`
+Deletes hash param(s)  
+Parameter:  
+- `params` - String | Array - param(s) name(s) to delete
 
 ### `subscribe([hashParameters], callback)`
 Subscribe to specific parameters  
