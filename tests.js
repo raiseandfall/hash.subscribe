@@ -97,13 +97,28 @@ test('Testing getters', function(t) {
     t.equal(currentHash, initHash);
   });
 
-  t.test('getHash returns the hash as an array of parameters', function(t) {
+  t.test('getParams returns an array of all hash parameters', function(t) {
     t.plan(1);
     var initHash = 'baz=qux&foo=bar1,bar2';
     var mockHash = {'foo': {values: ['bar1', 'bar2']}, 'baz': {values: ['qux']}};
     Hash.init(initHash);
     var currentHashParams = Hash.getParams();
     t.deepEqual(currentHashParams, mockHash);
+  });
+
+  t.test('getParam returns the values of one hash parameter', function(t) {
+    t.plan(1);
+    var initHash = 'qux=baz&bar=foo1,foo2';
+    var mockHash = ['foo1', 'foo2'];
+    Hash.init(initHash);
+    var currentHashParam = Hash.getParam('bar');
+    t.deepEqual(currentHashParam, mockHash);
+  });
+
+  t.test('getParam returns false if parameter does not exist', function(t) {
+    t.plan(1);
+    Hash.init('');
+    t.deepEqual(Hash.getParam(''), false);
   });
 
   t.end();

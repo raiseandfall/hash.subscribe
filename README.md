@@ -67,6 +67,12 @@ Returns: String
 Get current hash parameters  
 Returns: Object
 
+### `getParam(key)`
+Get values of one hash parameter  
+Parameter:  
+- `key` - string - parameter name  
+Returns: Array
+
 ### `setHash(hash)`
 Updates current hash  
 Parameter:  

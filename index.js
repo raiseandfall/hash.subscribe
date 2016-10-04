@@ -230,6 +230,23 @@ var Hash = (function () {
   };
 
   /**
+   * @function      getParam
+   * @description   Get one hash param values
+   * @param         key - hash param
+   * @returns       Array of values | false if param doesn't exist
+   **/
+  var getParam = function (key) {
+    if (!key) {
+      return false;
+    }
+    var tmpHashParams = getParamsFromHash();
+    if (!(key in tmpHashParams)) {
+      return false;
+    }
+    return tmpHashParams[key];
+  };
+
+  /**
    * @function      updateHashKeyValue
    * @description   Updates hash key value
    * @param         key - hash param
@@ -385,6 +402,7 @@ var Hash = (function () {
     getHash: getHash,
     setHash: setHash,
     getParams: getParams,
+    getParam: getParam,
     updateHashKeyValue: updateHashKeyValue,
     deleteParam: deleteParam,
     init: init,
